@@ -1,0 +1,15 @@
+{
+  "name": "ethereum-perf-agent",
+  "version": "0.1.0",
+  "description": "hyperledger besu - erc-20 performance test",
+  "main": "multiAgent/controllerNode.js",
+  "author": "sh.min",
+  "license": "MIT",
+  "dependencies": {
+    "@ethereumjs/tx": "^5.3.0",
+    "cors": "^2.8.5",
+    "express": "^4.19.1",
+    "request-promise": "^4.2.6",
+    "web3": "4.6.0"
+  }
+}

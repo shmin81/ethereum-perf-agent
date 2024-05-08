@@ -1,0 +1,12 @@
+# node.js
+node_modules/
+
+# MacOS
+.DS_Store
+
+config.json
+*.log
+*.txt
+
+logs/
+package-lock.json

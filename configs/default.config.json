@@ -1,0 +1,9 @@
+{
+  "ownerPrivKey": "8f2a55949038a9610f50fb23b5883af3b4ecb3c3bb792cbcefbd1542c692be63",
+  "endpointfile": "endpoints.json",
+  "startEndpointIdx": -1,
+  "accountfile": "accounts_4.json",
+  "startAccountIdx": -1,
+  "numberOfAccounts": 1,
+  "startPortNumber": 10060
+}

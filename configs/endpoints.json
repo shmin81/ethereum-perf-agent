@@ -1,0 +1,6 @@
+[
+    "http://besu-validator1.besu:8545",
+    "http://besu-validator2.besu:8545",
+    "http://besu-validator3.besu:8545",
+    "http://besu-validator4.besu:8545"
+]
