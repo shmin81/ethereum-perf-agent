@@ -1,7 +1,7 @@
 {
-  "name": "ethereum-perf-agent",
+  "name": "perf-ethereum-agent",
   "version": "0.1.0",
-  "description": "hyperledger besu - erc-20 performance test",
+  "description": "hyperledger besu - performance test",
   "main": "multiAgent/controllerNode.js",
   "author": "sh.min",
   "license": "MIT",
