@@ -201,7 +201,7 @@ function getFunctionPostList(functionObj) {
 }
 
 function getRawTxTypeFunc(funcObj) {
-  if (funcObj.inputs.length != 0) {
+  if (funcObj.inputs.length == 0) {
     return `  //\n  // Under Construction!!\n  //\n`
   }
 

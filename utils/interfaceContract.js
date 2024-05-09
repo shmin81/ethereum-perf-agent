@@ -71,11 +71,12 @@ function getRawTxReq(senderKey, nonce, dataObj) {
     to: contractAddr,
     data: dataObj
   }
-  // sign the transaction
+
   const txObj = LegacyTransaction.fromTxData(txData, customChain)
   const signedObj = txObj.sign(senderKey)
   const signedTx = signedObj.serialize()
   const signedTxHex = Buffer.from(signedTx).toString('hex')
+
   const _body = {
     jsonrpc: '2.0',
     method: 'eth_sendRawTransaction',
