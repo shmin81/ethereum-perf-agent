@@ -1,6 +1,6 @@
 const fs = require('fs')
 const { Web3 } = require('web3')
-const utils = require('./utils')
+const utils = require('../common/utils')
 
 let accountCounts = 10 // max: 999999
 
@@ -10,7 +10,7 @@ const PrePrivKeyTo = '0x20240000000000000000000000000000000000000000000000000000
 
 const args = process.argv.slice(2)
 if (args.length == 0) {
-  console.log('node  0.createAccounts.js  numberOfAccounts(200)')
+  console.log('node  1.createAccounts.js  numberOfAccounts(200)')
   process.exit(0)
 }
 
