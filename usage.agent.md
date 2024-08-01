@@ -10,9 +10,8 @@ $ sh agent.run.sh
 ### 테스트 케이스
 - erc20 : openzepplin
 - erc20perf : TTA V&V
-- docu : 조달청 BMT
+- docu : document service BMT
 - sto : STO
-- native : 조회용 API 성능(trace 등)
 
 ### 테스트 정보를 셋팅하고, agent 노드를 실행(agent 실행시에 테스트 Contract관련 확인 안함.) - 신규로 배포(deploy)할 예정인 경우
 ```
@@ -30,7 +29,6 @@ curl -X POST "http://localhost:10050/setTestCase/erc20"
 curl -X POST "http://localhost:10050/setTestCase/erc20perf"
 curl -X POST "http://localhost:10050/setTestCase/docu"
 curl -X POST "http://localhost:10050/setTestCase/sto"
-curl -X POST "http://localhost:10050/setTestCase/native"
 ```
 
 ### 특정 노드에서 contract deploy후에 다른 노드에 contract address를 사용하도록 등록 후, agent 노드를 실행 - 배포된 Contract가 있어야 함.
