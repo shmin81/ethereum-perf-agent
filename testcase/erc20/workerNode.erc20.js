@@ -62,7 +62,7 @@ server.listen(setting.port, async () => {
     logs.newLog(testName, setting.minerIdx)
     DEBUG(`${startInfoStr} ${nodeInfo}\n`)
 
-    // setting 
+    // setting
     test.setTestEnv(httpRpcUrl, configObj.httpheaders, testContractAddr, testContractName)
 
     deployed = await support.checkContractDeployed(httpRpcUrl, testContractAddr)
@@ -103,7 +103,7 @@ server.listen(setting.port, async () => {
       }
     }
 
-    let xMsg = `Test Ready - prepare time: ${(((new Date()).valueOf() - startTime.valueOf()) / 1000).toFixed(1)} seconds`
+    let xMsg = `Test Ready - prepare time: ${((new Date().valueOf() - startTime.valueOf()) / 1000).toFixed(1)} seconds`
     INFO(xMsg)
     isTestReady = true
   } catch (err) {
@@ -179,21 +179,19 @@ const prepareEachNode = async (req, res) => {
 
 let transferAmount = 1
 const transfer = async (req, res) => {
-
   const accIdLock = acountLock++
   if (acountLock == setting.acountCnt) {
     acountLock = 0
   }
   const nonce = accounts[accIdLock].nonceLock++
   const acc = accounts[accIdLock]
-  
+
   const request = test.transferReq(acc.senderPrivKeyBytes, nonce, acc.receiver, transferAmount)
 
   return sendReq(request, res)
 }
 
 const getBalanceOf = async (req, res) => {
-
   let output = support.getDefaultResponseObj(testName, testContractAddr)
   try {
     let params = req.params
@@ -209,7 +207,6 @@ const getBalanceOf = async (req, res) => {
 }
 
 const getDecimals = async (req, res) => {
-
   let output = support.getDefaultResponseObj(testName, testContractAddr)
   try {
     let responseData = await test.decimals()
@@ -223,7 +220,6 @@ const getDecimals = async (req, res) => {
 }
 
 const getInitialSupply = async (req, res) => {
-
   let output = support.getDefaultResponseObj(testName, testContractAddr)
   try {
     let responseData = await test.initialSupply()
@@ -237,7 +233,6 @@ const getInitialSupply = async (req, res) => {
 }
 
 const getName = async (req, res) => {
-
   let output = support.getDefaultResponseObj(testName, testContractAddr)
   try {
     let responseData = await test.name()
@@ -251,7 +246,6 @@ const getName = async (req, res) => {
 }
 
 const getSymbol = async (req, res) => {
-
   let output = support.getDefaultResponseObj(testName, testContractAddr)
   try {
     let responseData = await test.symbol()
@@ -265,7 +259,6 @@ const getSymbol = async (req, res) => {
 }
 
 const getTotalSupply = async (req, res) => {
-
   let output = support.getDefaultResponseObj(testName, testContractAddr)
   try {
     let responseData = await test.totalSupply()
@@ -315,4 +308,3 @@ router.route('/ready').get(getReady)
 
 app.use('/', router)
 app.all('*', (req, res) => res.status(404).end())
-  

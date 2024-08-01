@@ -1,4 +1,3 @@
-
 const Web3Utils = require('web3-utils')
 
 const utils = require('../../common/utils')
@@ -10,11 +9,11 @@ let response = null
 exports.prepareDeposit = async function (test, accountPairList, ownerPrivKey, prepareAmount, _output) {
   //console.log('***** prepareDeposit *****')
   // for backgwound job
-  let output = Object.assign({}, _output);
+  let output = Object.assign({}, _output)
   try {
     let accountFrom = utils.convertPrivKeyToAccount(ownerPrivKey)
     let senderNonce = await support.getTransactionCount(test.getUri(), accountFrom.address)
-    
+
     response = await test.balanceOf(accountFrom.address)
     console.log(`owner balance: ${response}`)
     const acountsCnt = accountPairList.length
@@ -40,16 +39,16 @@ exports.prepareDeposit = async function (test, accountPairList, ownerPrivKey, pr
 exports.prepareDepositEachNode = async function (test, accountPairList, middleSenderPrivKey, ownerPrivKey, prepareAmount, includeReceiver, _output) {
   //console.log('***** prepareDepositEachNode *****')
   // for backgwound job
-  let output = Object.assign({}, _output);
+  let output = Object.assign({}, _output)
   try {
     let accountFrom = utils.convertPrivKeyToAccount(ownerPrivKey)
     let senderFrom = utils.convertPrivKeyToAccount(middleSenderPrivKey)
-    
+
     let senderNonce = await support.getTransactionCount(test.getUri(), accountFrom.address)
-    
+
     response = await test.balanceOf(accountFrom.address)
     console.log(`owner balance: ${response}`)
-    
+
     const acountsCnt = accountPairList.length
 
     let prepareAmountFull = prepareAmount * acountsCnt * 2

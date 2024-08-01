@@ -1,4 +1,3 @@
-
 const ABIHelper = require('../../common/abi')
 const support = require('../../common/support')
 const httpRequest = require('request-promise')
@@ -51,7 +50,7 @@ exports.setContractAddress = function (_contractAddr) {
   contractAddr = _contractAddr
 }
 
-exports.setTestEnv = function (_httpRpcUrl, _contractAddr, _httpheaders, chainId=0, _gas = 70000) {
+exports.setTestEnv = function (_httpRpcUrl, _contractAddr, _httpheaders, chainId = 0, _gas = 70000) {
   contractAddr = _contractAddr
   gasHex = Web3_Utils.toHex(_gas)
   request.uri = _httpRpcUrl

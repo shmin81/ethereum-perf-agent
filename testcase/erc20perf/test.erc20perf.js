@@ -1,4 +1,3 @@
-
 const ABIHelper = require('../../common/abi')
 const support = require('../../common/support')
 const { LegacyTransaction } = require('@ethereumjs/tx')
@@ -45,7 +44,7 @@ async function getEstimateGas(gasData) {
   let response = await httpUtil.sendHttpTest(request)
   if (response.body.result !== undefined && response.body.result.startsWith('0x')) {
     let _gas = Web3Utils.hexToNumber(response.body.result)
-    if ((_gas + gasUp) > Web3Utils.hexToNumber(gasHex)) {
+    if (_gas + gasUp > Web3Utils.hexToNumber(gasHex)) {
       gasHex = Web3Utils.numberToHex(_gas + gasUp)
     }
     return _gas
@@ -64,10 +63,10 @@ function getRawTxReq(senderKey, txData) {
   const _body = {
     jsonrpc: '2.0',
     method: 'eth_sendRawTransaction',
-    params: [ `0x${signedTxHex}` ],
+    params: [`0x${signedTxHex}`],
     id: support.getReqId(),
   }
-  
+
   request.body = _body
   return request
 }
@@ -84,7 +83,6 @@ exports.constructor = async function (_name, _symbol, _decimals, _initialSupply,
 // input:  [{"name":"_to","type":"address"},{"name":"_value","type":"uint256"}]
 // output: [{"name":"success","type":"bool"}]
 exports.transferReq = function (senderKey, nonce, _to, _value) {
-
   const txData = {
     nonce: Web3Utils.toHex(nonce),
     gasLimit: gasHex,
@@ -96,7 +94,6 @@ exports.transferReq = function (senderKey, nonce, _to, _value) {
 }
 
 exports.transferEstimateGas = async function (senderAddr, _to, _value) {
-
   const callGasData = {
     from: senderAddr,
     to: contractAddr,
@@ -108,7 +105,6 @@ exports.transferEstimateGas = async function (senderAddr, _to, _value) {
 // input:  [{"name":"_from","type":"address"},{"name":"_to","type":"address"},{"name":"_value","type":"uint256"}]
 // output: [{"name":"success","type":"bool"}]
 exports.transferFromReq = function (senderKey, nonce, _from, _to, _value) {
-
   const txData = {
     nonce: Web3Utils.toHex(nonce),
     gasLimit: gasHex,
@@ -120,7 +116,6 @@ exports.transferFromReq = function (senderKey, nonce, _from, _to, _value) {
 }
 
 exports.transferFromEstimateGas = async function (senderAddr, _from, _to, _value) {
-
   const callGasData = {
     from: senderAddr,
     to: contractAddr,
@@ -132,7 +127,6 @@ exports.transferFromEstimateGas = async function (senderAddr, _from, _to, _value
 // input:  [{"name":"_spender","type":"address"},{"name":"_value","type":"uint256"}]
 // output: [{"name":"success","type":"bool"}]
 exports.approveReq = function (senderKey, nonce, _spender, _value) {
-
   const txData = {
     nonce: Web3Utils.toHex(nonce),
     gasLimit: gasHex,
@@ -144,7 +138,6 @@ exports.approveReq = function (senderKey, nonce, _spender, _value) {
 }
 
 exports.approveEstimateGas = async function (senderAddr, _spender, _value) {
-
   const callGasData = {
     from: senderAddr,
     to: contractAddr,
@@ -156,7 +149,6 @@ exports.approveEstimateGas = async function (senderAddr, _spender, _value) {
 // input:  [{"name":"_spender","type":"address"},{"name":"_addedValue","type":"uint256"}]
 // output: [{"name":"","type":"bool"}]
 exports.increaseAllowanceReq = function (senderKey, nonce, _spender, _addedValue) {
-
   const txData = {
     nonce: Web3Utils.toHex(nonce),
     gasLimit: gasHex,
@@ -168,7 +160,6 @@ exports.increaseAllowanceReq = function (senderKey, nonce, _spender, _addedValue
 }
 
 exports.increaseAllowanceEstimateGas = async function (senderAddr, _spender, _addedValue) {
-
   const callGasData = {
     from: senderAddr,
     to: contractAddr,
@@ -180,7 +171,6 @@ exports.increaseAllowanceEstimateGas = async function (senderAddr, _spender, _ad
 // input:  [{"name":"_spender","type":"address"},{"name":"_subtractedValue","type":"uint256"}]
 // output: [{"name":"","type":"bool"}]
 exports.decreaseAllowanceReq = function (senderKey, nonce, _spender, _subtractedValue) {
-
   const txData = {
     nonce: Web3Utils.toHex(nonce),
     gasLimit: gasHex,
@@ -192,7 +182,6 @@ exports.decreaseAllowanceReq = function (senderKey, nonce, _spender, _subtracted
 }
 
 exports.decreaseAllowanceEstimateGas = async function (senderAddr, _spender, _subtractedValue) {
-
   const callGasData = {
     from: senderAddr,
     to: contractAddr,
@@ -204,7 +193,6 @@ exports.decreaseAllowanceEstimateGas = async function (senderAddr, _spender, _su
 // input:  [{"name":"_spender","type":"address"},{"name":"_value","type":"uint256"},{"name":"_extraData","type":"bytes"}]
 // output: [{"name":"success","type":"bool"}]
 exports.approveAndCallReq = function (senderKey, nonce, _spender, _value, _extraData) {
-
   const txData = {
     nonce: Web3Utils.toHex(nonce),
     gasLimit: gasHex,
@@ -216,7 +204,6 @@ exports.approveAndCallReq = function (senderKey, nonce, _spender, _value, _extra
 }
 
 exports.approveAndCallEstimateGas = async function (senderAddr, _spender, _value, _extraData) {
-
   const callGasData = {
     from: senderAddr,
     to: contractAddr,
@@ -229,7 +216,6 @@ exports.approveAndCallEstimateGas = async function (senderAddr, _spender, _value
 
 // output: [{"name":"","type":"string"}]
 exports.name = async function () {
-
   const callData = {
     to: contractAddr,
     data: ABIHelper.getCallDataByABI(funcAbiObj['name'], []),
@@ -240,7 +226,6 @@ exports.name = async function () {
 
 // output: [{"name":"","type":"uint256"}]
 exports.totalSupply = async function () {
-
   const callData = {
     to: contractAddr,
     data: ABIHelper.getCallDataByABI(funcAbiObj['totalSupply'], []),
@@ -251,7 +236,6 @@ exports.totalSupply = async function () {
 
 // output: [{"name":"","type":"uint8"}]
 exports.decimals = async function () {
-
   const callData = {
     to: contractAddr,
     data: ABIHelper.getCallDataByABI(funcAbiObj['decimals'], []),
@@ -262,7 +246,6 @@ exports.decimals = async function () {
 
 // output: [{"name":"","type":"string"}]
 exports.symbol = async function () {
-
   const callData = {
     to: contractAddr,
     data: ABIHelper.getCallDataByABI(funcAbiObj['symbol'], []),
@@ -273,7 +256,6 @@ exports.symbol = async function () {
 
 // output: [{"name":"","type":"uint256"}]
 exports.maxSupply = async function () {
-
   const callData = {
     to: contractAddr,
     data: ABIHelper.getCallDataByABI(funcAbiObj['maxSupply'], []),
@@ -285,7 +267,6 @@ exports.maxSupply = async function () {
 // input:  [{"name":"_owner","type":"address"}]
 // output: [{"name":"balance","type":"uint256"}]
 exports.balanceOf = async function (_owner) {
-
   const callData = {
     to: contractAddr,
     data: ABIHelper.getCallDataByABI(funcAbiObj['balanceOf'], [_owner]),
@@ -297,7 +278,6 @@ exports.balanceOf = async function (_owner) {
 // input:  [{"name":"_owner","type":"address"},{"name":"_spender","type":"address"}]
 // output: [{"name":"remaining","type":"uint256"}]
 exports.allowance = async function (_owner, _spender) {
-
   const callData = {
     to: contractAddr,
     data: ABIHelper.getCallDataByABI(funcAbiObj['allowance'], [_owner, _spender]),
@@ -305,4 +285,3 @@ exports.allowance = async function (_owner, _spender) {
   let responseData = await support.sendCall(request.uri, callData)
   return Web3Utils.hexToNumberString(responseData)
 }
-
