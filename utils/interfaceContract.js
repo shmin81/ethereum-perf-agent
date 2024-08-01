@@ -29,7 +29,6 @@ exports.setContractAddress = function (_contractAddr) {
 }
 
 exports.setTestEnv = async function (_httpRpcUrl, _httpheaders, _contractAddr, _contractName, _gas = 100000) {
-
   contractAddr = _contractAddr
   gasHex = Web3Utils.toHex(_gas)
   request.uri = _httpRpcUrl
@@ -42,17 +41,16 @@ exports.setTestEnv = async function (_httpRpcUrl, _httpheaders, _contractAddr, _
 }
 
 async function getEstimateGas(senderAddr, dataObj) {
-
   const gasData = {
     from: senderAddr,
     to: contractAddr,
-    data: dataObj
+    data: dataObj,
   }
   const request = httpUtil.getPostRequest(request.uri, 'eth_estimateGas', [gasData])
   const response = await httpUtil.sendHttpTest(request)
   if (response.body.result !== undefined && response.body.result.startsWith('0x')) {
     const _gas = Web3Utils.hexToNumber(response.body.result)
-    if ((_gas + gasUp) > Web3Utils.hexToNumber(gasHex)) {
+    if (_gas + gasUp > Web3Utils.hexToNumber(gasHex)) {
       gasHex = Web3Utils.numberToHex(_gas + gasUp)
     }
     return _gas
@@ -60,9 +58,8 @@ async function getEstimateGas(senderAddr, dataObj) {
     console.error(response.body)
   }
 }
-  
-function getRawTxReq(senderKey, nonce, dataObj) {
 
+function getRawTxReq(senderKey, nonce, dataObj) {
   const txData = {
     nonce: Web3Utils.toHex(nonce),
     gasLimit: gasHex,
@@ -123,7 +120,7 @@ exports.convert = function (cabi) {
       constructorInputs = x.inputs
       deployFuncStr = funcParamsDespheaderStr(x)
       deployFuncStr += funcDefineCallStr(x.type, x.inputs)
-      deployFuncStr += `  return [${funcParamsObj2str(x.inputs)}]\n`
+      deployFuncStr += `\n  return [${funcParamsObj2str(x.inputs)}]\n`
       deployFuncStr += `}\n\n`
     } else if (x.type === 'function') {
       if (x.stateMutability === 'view') {
@@ -155,20 +152,20 @@ function funcParamsDespheaderStr(x) {
 }
 
 function funcDefineCallStr(fName, inputs) {
-  return `exports.${fName} = async function (${funcParamsObj2str(inputs)}) {\n`
+  return `exports.${fName} = async function (${funcParamsObj2str(inputs)}) {`
 }
 
 function funcDefineTxStr(fName, inputs) {
   let input2 = inputs.slice()
   input2.unshift({ name: 'nonce' })
   input2.unshift({ name: 'senderKey' })
-  return `exports.${fName}Req = function (${funcParamsObj2str(input2)}) {\n`
+  return `exports.${fName}Req = function (${funcParamsObj2str(input2)}) {`
 }
 
 function funcDefineEstimateGasStr(fName, inputs) {
   let input2 = inputs.slice()
   input2.unshift({ name: 'senderAddr' })
-  return `exports.${fName}EstimateGas = async function (${funcParamsObj2str(input2)}) {\n`
+  return `exports.${fName}EstimateGas = async function (${funcParamsObj2str(input2)}) {`
 }
 
 function makeAbi2CallFunc(x) {

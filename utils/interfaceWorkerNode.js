@@ -64,7 +64,7 @@ server.listen(setting.port, async () => {
     logs.newLog(testName, setting.minerIdx)
     DEBUG(\`\${startInfoStr} \${nodeInfo}\\n\`)
 
-    // setting 
+    // setting
     test.setTestEnv(httpRpcUrl, configObj.httpheaders, testContractAddr, testContractName)
 
     deployed = await support.checkContractDeployed(httpRpcUrl, testContractAddr)
@@ -105,7 +105,7 @@ server.listen(setting.port, async () => {
       }
     }
 
-    let xMsg = \`Test Ready - prepare time: \${(((new Date()).valueOf() - startTime.valueOf()) / 1000).toFixed(1)} seconds\`
+    let xMsg = \`Test Ready - prepare time: \${((new Date().valueOf() - startTime.valueOf()) / 1000).toFixed(1)} seconds\`
     INFO(xMsg)
     isTestReady = true
   } catch (err) {
@@ -212,7 +212,7 @@ function getRawTxTypeFunc(funcObj) {
   }
   const nonce = accounts[accIdLock].nonceLock++
   const acc = accounts[accIdLock]
-  
+
   // Under Construction!!!!
   // const request = test.${funcObj.name}Req(acc.senderPrivKeyBytes, nonce, { ${apiParamsObj2str(funcObj.inputs, ' }, { ', '')} })
 
