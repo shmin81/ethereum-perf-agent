@@ -183,7 +183,7 @@ async function getTestStatus(resultObj = null, chkProcess = true, testcaseName =
   //let message = runningTask == 0 ? 'Not Yet!' : 'test Ready!'
   let message = 'Ready!'
   try {
-    if (chkProcess) { 
+    if (chkProcess) {
       if (runningTask > 0) {
         let statusTestProcess = await httpUtil.sendHttpGet(`http://localhost:${portNumber}/ready`)
         // console.log('statusTestProcess', statusTestProcess, statusTestProcess.result.isTestReady, statusTestProcess.result.testcase)
@@ -199,8 +199,7 @@ async function getTestStatus(resultObj = null, chkProcess = true, testcaseName =
           result = false
           message += ` [Warn] Testcase(${testcaseName}) is mismatched!`
         }
-      }
-      else {
+      } else {
         if (testcaseName != null) {
           message = `Not yet! (${testcaseName})`
           result = false
@@ -367,8 +366,7 @@ const getStatus = async (req, res) => {
   let output = null
   if (params.testname != undefined) {
     output = await getTestStatus(null, true, params.testname)
-  }
-  else {
+  } else {
     output = await getTestStatus(null, false)
   }
   // 상태점검이므로

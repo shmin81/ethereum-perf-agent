@@ -1,4 +1,3 @@
-
 exports.getWorkerHeader = function (testName, contractName, constructorInputs) {
   let scriptStr = `// ${testName} test
 const express = require('express')
@@ -188,7 +187,7 @@ const prepareEachNode = async (req, res) => {
 
 function getFunctionPostList(functionObj) {
   let strRouter = ''
-  for(let element of functionObj) {
+  for (let element of functionObj) {
     if (element.type === 'function') {
       if (element.stateMutability !== 'view') {
         strRouter += `const ${element.name} = async (req, res) => {\n`
@@ -223,7 +222,7 @@ function getRawTxTypeFunc(funcObj) {
 
 function getFunctionGetList(functionObj) {
   let strRouter = ''
-  for(let element of functionObj) {
+  for (let element of functionObj) {
     if (element.type === 'function') {
       if (element.stateMutability === 'view') {
         let getApiName = `get${capitalize(element.name)}`
@@ -246,15 +245,14 @@ function getCallTypeFunc(funcObj) {
   let strfunc = `try {`
   if (funcObj.inputs.length == 0) {
     strfunc += `\n    let responseData = await test.${funcObj.name}()\n`
-  }
-  else {
+  } else {
     strfunc += `
     let params = req.params
     let responseData = await test.${funcObj.name}(${apiParamsObj2str(funcObj.inputs, ', params.', 'params.')})\n`
   }
 
   let paramsArr = apiParamObjsToArray(funcObj.inputs)
-  paramsArr.forEach(elem => {
+  paramsArr.forEach((elem) => {
     strfunc += `    output.${elem} = params.${elem}\n`
   })
   strfunc += `    output.result = true\n`
@@ -307,7 +305,7 @@ app.all('*', (req, res) => res.status(404).end())
 
 function getRoutePostList(functionObj) {
   let strRouter = ''
-  for(let element of functionObj) {
+  for (let element of functionObj) {
     if (element.type === 'function') {
       if (element.stateMutability !== 'view') {
         strRouter += `// router.route('/${element.name}').post(${element.name})\n`
@@ -319,14 +317,13 @@ function getRoutePostList(functionObj) {
 
 function getRouteGetList(functionObj) {
   let strRouter = ''
-  for(let element of functionObj) {
+  for (let element of functionObj) {
     if (element.type === 'function') {
       if (element.stateMutability === 'view') {
         let getApiName = `get${capitalize(element.name)}`
         if (element.inputs.length > 0) {
           strRouter += `router.route('/${getApiName}${apiParamsObj2str(element.inputs)}').get(${getApiName})\n`
-        }
-        else {
+        } else {
           strRouter += `router.route('/${getApiName}').get(${getApiName})\n`
         }
       }
@@ -336,19 +333,18 @@ function getRouteGetList(functionObj) {
 }
 // 첫번쨰 문자를 대문자로 변환
 function capitalize(str) {
-	return str.charAt(0).toUpperCase() + str.slice(1);
+  return str.charAt(0).toUpperCase() + str.slice(1)
 }
 
-function apiParamsObj2str(arrayObj, arrayMerger='/:', preFix='/:') {
+function apiParamsObj2str(arrayObj, arrayMerger = '/:', preFix = '/:') {
   let strs = []
-  arrayObj.forEach(element => {
+  arrayObj.forEach((element) => {
     if (element.name.charAt(0) === '_') {
       strs.push(element.name.slice(1))
-    }
-    else {
+    } else {
       strs.push(element.name)
     }
-  });
+  })
   if (strs.length == 0) {
     return ''
   }
@@ -358,21 +354,20 @@ function apiParamsObj2str(arrayObj, arrayMerger='/:', preFix='/:') {
 // modify the api param name
 function apiParamObjsToArray(arrayObj) {
   let strs = []
-  arrayObj.forEach(element => {
+  arrayObj.forEach((element) => {
     if (element.name.charAt(0) === '_') {
       strs.push(element.name.slice(1))
-    }
-    else {
+    } else {
       strs.push(element.name)
     }
-  });
+  })
   return strs
 }
 
 function apiParamObjsTypeToArrayString(arrayObj) {
   let strs = []
-  arrayObj.forEach(element => {
+  arrayObj.forEach((element) => {
     strs.push(element.type)
-  });
+  })
   return strs.join('_')
 }

@@ -1,4 +1,3 @@
-
 const _request = {
   method: 'POST',
   uri: null,
@@ -23,12 +22,12 @@ exports.getPostRequest = function (_url, _method, _params = [], _id = 1) {
 function exceptionResp(req, err, reject) {
   let msg = {
     method: req.method,
-    url: req.uri
+    url: req.uri,
   }
   if (req.body.method !== undefined && req.body.method !== 'test') {
     msg.body = req.body
   }
-  if (err.error !== undefined && err.error.code === "ECONNREFUSED") {
+  if (err.error !== undefined && err.error.code === 'ECONNREFUSED') {
     msg.error = err.error
     reject(msg)
     return
@@ -91,7 +90,7 @@ exports.sendHttp = function (req) {
   })
 }
 
-/** 
+/**
  * use reject for fail
  * response가 error인 경우, reject로 error를 반환함. */
 exports.sendHttpPost = function (req) {
@@ -168,20 +167,22 @@ const chkMaxCount = 120
 let retryResponse = function (req, txid, res, rej) {
   let tryCnt = 0
   let timerId = setInterval(function () {
-    sendHttpSync(req).then((receipt) => {
-      if (receipt == null) {
-        if (++tryCnt > chkMaxCount) {
+    sendHttpSync(req)
+      .then((receipt) => {
+        if (receipt == null) {
+          if (++tryCnt > chkMaxCount) {
+            clearTimeout(timerId)
+            rej(`failed by time out (not found tx receipt - ${txid})`)
+          }
+        } else {
           clearTimeout(timerId)
-          rej(`failed by time out (not found tx receipt - ${txid})`)
+          res(receipt)
         }
-      } else {
+      })
+      .catch((err) => {
         clearTimeout(timerId)
-        res(receipt)
-      }
-    }).catch((err) => {
-      clearTimeout(timerId)
-      exceptionResp(req, err, rej)
-    })
+        exceptionResp(req, err, rej)
+      })
   }, interval)
 }
 

@@ -120,7 +120,7 @@ exports.getAgentManagers = function () {
     adminPriv: addr.slice(0, 1),
     issueAddr: addr.slice(1, 5),
     issuePriv: priv.slice(1, 5),
-    ctrlAddr: addr.slice(0, 1)
+    ctrlAddr: addr.slice(0, 1),
   }
   managers.privKeyBytes = Buffer.from(managers.adminPriv, 'hex')
   return managers
@@ -131,7 +131,7 @@ exports.getAgentIssuers = function (minerIdx) {
   const priv = loadJson('sto.privatekeys.json')
   let issuer = {
     address: addr[minerIdx + 1],
-    privKey: priv[minerIdx + 1]
+    privKey: priv[minerIdx + 1],
   }
   issuer.privKeyBytes = Buffer.from(issuer.privKey, 'hex')
   return issuer

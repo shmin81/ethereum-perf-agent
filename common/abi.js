@@ -16,13 +16,13 @@ exports.getConstructorDataByABI = function (constructorABI, args) {
 }
 
 exports.getFunctionObj = function (abiArrayObj, functionName) {
-  for(let element of abiArrayObj) {
-    if (element.name === functionName  && element.type === 'function') {
+  for (let element of abiArrayObj) {
+    if (element.name === functionName && element.type === 'function') {
       return {
         type: element.type,
         name: element.name,
         inputs: element.inputs,
-        outputs: element.outputs
+        outputs: element.outputs,
       }
     }
   }
@@ -30,7 +30,7 @@ exports.getFunctionObj = function (abiArrayObj, functionName) {
 
 exports.getAbiFunctionsOnlyObj = function (abiArrayObj) {
   let functionsNamesObj = {}
-  for(let element of abiArrayObj) {
+  for (let element of abiArrayObj) {
     if (element.type === 'function') {
       let propertyName = `${element.name}`
       functionsNamesObj[propertyName] = {

@@ -1,11 +1,10 @@
-
 const utils = require('./utils')
 
 const backgroundStatus = {
   READY: 'ready',
   RUNNING: 'running',
   DONE: 'done',
-  FAILED: 'failed'
+  FAILED: 'failed',
 }
 Object.freeze(backgroundStatus)
 exports.getEnumOfBackgroundWorkStatus = function () {
@@ -15,13 +14,12 @@ exports.getEnumOfBackgroundWorkStatus = function () {
 let _workName = ''
 let _workStatus = backgroundStatus.READY
 
-exports.chkBackWorkStatus = function(workName, output) {
+exports.chkBackWorkStatus = function (workName, output) {
   return chkBackWorkStatus(workName, output)
 }
 
 function chkBackWorkStatus(workName, output) {
-  
-  output.message=`${workName}...${_workStatus}`
+  output.message = `${workName}...${_workStatus}`
   switch (_workStatus) {
     case backgroundStatus.READY:
       output.result = true
@@ -38,11 +36,11 @@ function chkBackWorkStatus(workName, output) {
     default:
       output.result = false
   }
-  setTimeout(() => { 
-    _workStatus = backgroundStatus.READY 
+  setTimeout(() => {
+    _workStatus = backgroundStatus.READY
     console.log('BackgroundWorkStatus is changed to READY')
   }, 2000)
-  
+
   return false
 }
 
@@ -63,13 +61,12 @@ exports.runBackgroundWork = async function (req, res, output, workName, function
   return utils.responseJson(res, output)
 }
 
-async function startingfunctions (functionObj, ...params) {
+async function startingfunctions(functionObj, ...params) {
   //console.log(`startingfunctions`, params)
   let output = await functionObj(...params)
   if (output.result) {
     _workStatus = backgroundStatus.DONE
-  }
-  else {
+  } else {
     _workStatus = backgroundStatus.FAILED
   }
   console.log(`[${_workName}]`, output)

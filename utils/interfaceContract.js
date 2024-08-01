@@ -1,4 +1,3 @@
-
 const headerScript = `
 const ABIHelper = require('../../common/abi')
 const support = require('../../common/support')
@@ -88,7 +87,7 @@ function getRawTxReq(senderKey, nonce, dataObj) {
 }\n\n`
 
 exports.getTestCaseHeader = function () {
-    return headerScript
+  return headerScript
 }
 
 let deployFuncStr = ''
@@ -116,8 +115,8 @@ exports.convert = function (cabi) {
   contractTxApiScript = ''
   contractCallApiScript = ''
   constructorInputs = null
-  let i=0
-  for(let x of cabi) {
+  let i = 0
+  for (let x of cabi) {
     console.log(i++, x.name, x.type)
     if (x.type === 'constructor') {
       console.log(`=== constructor ===`)
@@ -126,17 +125,14 @@ exports.convert = function (cabi) {
       deployFuncStr += funcDefineCallStr(x.type, x.inputs)
       deployFuncStr += `  return [${funcParamsObj2str(x.inputs)}]\n`
       deployFuncStr += `}\n\n`
-    }
-    else if (x.type === 'function') {
-      
+    } else if (x.type === 'function') {
       if (x.stateMutability === 'view') {
         console.log(`=== view function ===`, x.payable, x.stateMutability)
         console.log('inputs ', x.inputs)
         console.log('outputs', x.outputs)
         contractCallApiScript += funcParamsDespheaderStr(x)
         contractCallApiScript += makeAbi2CallFunc(x)
-      }
-      else {
+      } else {
         console.log(`=== tx function ===`, x.payable, x.stateMutability)
         console.log('inputs ', x.inputs)
         console.log('outputs', x.outputs)
@@ -163,14 +159,14 @@ function funcDefineCallStr(fName, inputs) {
 }
 
 function funcDefineTxStr(fName, inputs) {
-  let input2 = inputs.slice();
+  let input2 = inputs.slice()
   input2.unshift({ name: 'nonce' })
   input2.unshift({ name: 'senderKey' })
   return `exports.${fName}Req = function (${funcParamsObj2str(input2)}) {\n`
 }
 
 function funcDefineEstimateGasStr(fName, inputs) {
-  let input2 = inputs.slice();
+  let input2 = inputs.slice()
   input2.unshift({ name: 'senderAddr' })
   return `exports.${fName}EstimateGas = async function (${funcParamsObj2str(input2)}) {\n`
 }
@@ -185,8 +181,7 @@ function makeAbi2CallFunc(x) {
   let responseData = await support.sendCall(request.uri, callData)\n`
   if (x.outputs.length == 1 && IsNumberType(x.outputs[0].type)) {
     str += `  return Web3Utils.hexToNumberString(responseData)\n`
-  }
-  else {
+  } else {
     str += `  return responseData\n`
   }
   subcall += str
@@ -203,7 +198,7 @@ function IsNumberType(solidityType) {
 
 function makeAbi2TxFunc(x) {
   let subtx = funcDefineTxStr(x.name, x.inputs)
-  // obj 
+  // obj
   let str = `
   const txData = ABIHelper.getCallDataByABI(funcAbiObj['${x.name}'], [${funcParamsObj2str(x.inputs)}])
   return getRawTxReq(senderKey, nonce, txData)\n`
@@ -224,15 +219,14 @@ function makeAbi2TxFunc(x) {
 let undefinedParamCnt = 0
 function funcParamsObj2str(arrayObj) {
   let strs = []
-  arrayObj.forEach(element => {
+  arrayObj.forEach((element) => {
     if (element.name == undefined || element.name == null || element.name === '') {
       console.log(`function param name is not defined (set name: undefined${undefinedParamCnt})`)
       strs.push(`undefined${undefinedParamCnt++}`)
-    }
-    else {
+    } else {
       strs.push(element.name)
     }
-  });
+  })
   undefinedParamCnt = 0
   return strs.join(', ')
 }

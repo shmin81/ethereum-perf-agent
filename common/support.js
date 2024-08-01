@@ -29,12 +29,12 @@ exports.getCustomChain = async function (httpUrl, forkStr = 'istanbul') {
   return { common: customChain }
 }
 
-exports.getReqId = function() {
+exports.getReqId = function () {
   const hrTime = process.hrtime()
   return hrTime[0] * 1000000000 + hrTime[1]
 }
 
-exports.getDefaultResponseObj = function(testName, contractAddr=null) {
+exports.getDefaultResponseObj = function (testName, contractAddr = null) {
   if (contractAddr == undefined || contractAddr == null) {
     return { result: false, testcase: testName }
   }
@@ -269,11 +269,9 @@ exports.sendTxReceipt = async function (res, httpRpcUrl, testcase, txid) {
     output.result = true
     if (response.status == '0x1') {
       output.status = 'Success'
-    }
-    else if (response.status == '0x0') {
+    } else if (response.status == '0x0') {
       output.status = 'Failed'
-    }
-    else {
+    } else {
       output.status = `Unknown value (${output.status})`
     }
     output.txReceipt = response
@@ -334,7 +332,7 @@ exports.getBlock = async function (httpRpcUrl, blockNum) {
 
 exports.getBlockTxCount = async function (httpRpcUrl, blockNum) {
   // console.log(httpRpcUrl, blockNum)
-  if (!blockNum.toString().startsWith('0x')){
+  if (!blockNum.toString().startsWith('0x')) {
     blockNum = Web3Utils.numberToHex(blockNum)
   }
   let request = http.getPostRequest(httpRpcUrl, 'eth_getBlockTransactionCountByNumber', [blockNum])

@@ -1,12 +1,11 @@
-
 const fs = require('fs')
 const support = require('../common/support')
 const interfaceContract = require('./interfaceContract')
 
 const args = process.argv.slice(2)
 if (args.length < 2) {
-  console.log('ontions: testcase_name, compiled_smart_contract_filename(json or abi)')
-  console.log('node 2.makeTestCase.js erc777 erc777Token')
+  console.log('options: testcase_name, compiled_smart_contract_filename(json or abi), forceUpdate(default:true)')
+  console.log('node  2.makeTestCase.js  erc777  erc777Token  false')
   process.exit(1)
 }
 
@@ -21,6 +20,9 @@ interfaceContract.convert(cabi)
 
 if (!fs.existsSync(`../testcase/${args[0]}`)) {
   fs.mkdirSync(`../testcase/${args[0]}`)
+} else if (args.length == 3 && args[2].toLowerCase() == 'false') {
+  console.log(`allready exist: 'testcase/${args[0]}'`)
+  process.exit(0)
 }
 
 // ==============================================

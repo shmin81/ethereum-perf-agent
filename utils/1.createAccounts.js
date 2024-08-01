@@ -10,7 +10,7 @@ const PrePrivKeyTo = '0x20240000000000000000000000000000000000000000000000000000
 
 const args = process.argv.slice(2)
 if (args.length == 0) {
-  console.log('node  1.createAccounts.js  numberOfAccounts(200)')
+  console.log('node  1.createAccounts.js  numberOfAccounts')
   process.exit(0)
 }
 
@@ -24,7 +24,7 @@ if (args.length == 1) {
 
 const pkListFile = `../configs/accounts_${accountCounts}.json`
 if (fs.existsSync(pkListFile)) {
-  console.log('Already existed.', pkListFile)
+  console.log('[ERROR] Already existed.', pkListFile)
   process.exit(0)
 }
 
@@ -43,7 +43,7 @@ let httpProvider = new Web3.providers.HttpProvider(httpRpcUrl, utils.getweb3Http
 const web3 = new Web3(httpProvider)
 
 console.log('creating...', accountCounts, ' users')
-utils.sleep(2000)
+utils.sleep(1000)
 
 var writer = fs.createWriteStream(pkListFile)
 writer.write('[{\n')

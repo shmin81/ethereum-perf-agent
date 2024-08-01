@@ -152,7 +152,7 @@ const removeLogs = async (req, res) => {
     utils.responseJson(res, output)
   } catch (err) {
     //ERROR(`It SHOULD NOT happen! - ${JSON.stringify(err)}`)
-    utils.responseJson(res, { result: false, cmd: "removeLogs", error: err }, 500)
+    utils.responseJson(res, { result: false, cmd: 'removeLogs', error: err }, 500)
   }
 }
 
@@ -167,7 +167,7 @@ const getBlockNumber = async (req, res) => {
     utils.responseJson(res, output)
   } catch (err) {
     //ERROR(`It SHOULD NOT happen! - ${JSON.stringify(err)}`)
-    utils.responseJson(res, { result: false, cmd: "blockNumber", error: err }, 500)
+    utils.responseJson(res, { result: false, cmd: 'blockNumber', error: err }, 500)
   }
 }
 
@@ -185,7 +185,7 @@ const getBlockInterval = async (req, res) => {
   } catch (err) {
     console.log('blockInterval', err)
     //ERROR(`It SHOULD NOT happen! - ${JSON.stringify(err)}`)
-    utils.responseJson(res, { result: false, cmd: "blockInterval", error: err }, 500)
+    utils.responseJson(res, { result: false, cmd: 'blockInterval', error: err }, 500)
   }
 }
 
@@ -201,7 +201,7 @@ const getBlockTxCnt = async (req, res, blockNumber) => {
   const output = {
     result: true,
     blockNumber,
-    blockTxCount: null
+    blockTxCount: null,
   }
   try {
     output.blockTxCount = await support.getBlockTxCount(targetUrl, blockNumber)
@@ -209,7 +209,7 @@ const getBlockTxCnt = async (req, res, blockNumber) => {
     utils.responseJson(res, output)
   } catch (err) {
     //ERROR(`It SHOULD NOT happen! - ${JSON.stringify(err)}`)
-    utils.responseJson(res, { result: false, cmd: "blockTxCount", error: err }, 500)
+    utils.responseJson(res, { result: false, cmd: 'blockTxCount', error: err }, 500)
   }
 }
 
@@ -240,7 +240,7 @@ const testResult = async (req, res) => {
     let firstTimestame = 0
     let lastTimestameInTx = 0
     let lastTimestameAfter = 0
-    
+
     for (let i = latestBlock; i > 2; i--) {
       //console.log(i)
       let nums = await support.getBlockTxCount(targetUrl, i)
@@ -256,8 +256,7 @@ const testResult = async (req, res) => {
             break
           }
         }
-      } 
-      else {
+      } else {
         cnt = 0
         sumTxs += nums
         if (find == false) {
@@ -272,7 +271,7 @@ const testResult = async (req, res) => {
         }
       }
     }
-    if (lastTimestameAfter == 0 && latestBlock < await support.getLatestblockNumber(targetUrl)) {
+    if (lastTimestameAfter == 0 && latestBlock < (await support.getLatestblockNumber(targetUrl))) {
       let lastAfterBlock = await support.getBlock(targetUrl, latestBlock + 1)
       lastTimestameAfter = Web3Utils.hexToNumber(lastAfterBlock.timestamp)
     }
@@ -281,8 +280,7 @@ const testResult = async (req, res) => {
       let blockPreiod = await blockInterval(Web3Utils.hexToNumber(firstBlock.number) - 1)
       output.tps = sumTxs / blockPreiod
       output.periodSeconds = blockPreiod
-    }
-    else {
+    } else {
       output.tps = sumTxs / (lastTimestameAfter - firstTimestame)
       output.periodSeconds = lastTimestameAfter - firstTimestame
     }
@@ -299,7 +297,7 @@ const testResult = async (req, res) => {
   } catch (err) {
     console.log('[ERROR] Test Result', err)
     //console.log('** block', lastBlock, ' ~ ', firstBlock)
-    utils.responseJson(res, { result: false, cmd: "result", error: err }, 500)
+    utils.responseJson(res, { result: false, cmd: 'result', error: err }, 500)
   }
   IsResultRunning = false
 }
@@ -317,7 +315,9 @@ const testVerify = async (req, res) => {
     } else if (latestVerifyResult != null) {
       utils.responseJson(res, latestVerifyResult)
       //latestVerifyResult = {}
-      setTimeout(() => {latestVerifyResult = null}, 3000)
+      setTimeout(() => {
+        latestVerifyResult = null
+      }, 3000)
       return
     }
     IsVerifyRunning = true
@@ -376,13 +376,12 @@ async function backgroundVerify() {
       }
       let request = httpUtil.getPostRequest(targetUrl, 'eth_getTransactionReceipt', [transactionHash])
       //console.log('req', request)
-      if (i < maxMultiCnt && (i % 3 != 0)) {
+      if (i < maxMultiCnt && i % 3 != 0) {
         httpUtil.sendHttp(request).then((txResults) => {
           //console.log(txResults)
           updateTxReceipt(transactionHash, txResults)
         })
-      }
-      else {
+      } else {
         let txResults = await httpUtil.sendHttp(request)
         //console.log(txResults)
         updateTxReceipt(transactionHash, txResults)
@@ -409,7 +408,6 @@ async function backgroundVerify() {
 }
 
 function updateTxReceipt(transactionHash, txReceiptObj) {
-  
   if (txReceiptObj == undefined || txReceiptObj == null) {
     INFO(` * tx: ${transactionHash} -> Dropped`)
     dropped++
